@@ -13,21 +13,21 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+// import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
+// import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
-import MuiLink from "@mui/material/Link";
+// import MuiLink from "@mui/material/Link";
 
 // @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
+// import FacebookIcon from "@mui/icons-material/Facebook";
+// import GitHubIcon from "@mui/icons-material/GitHub";
+// import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -44,12 +44,9 @@ import routes from "routes";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+// import SignUp from "layouts/pages/authentication/sign-up";
 
-function SignInBasic() {
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
+function SignUpBasic() {
   return (
     <>
       <DefaultNavbar
@@ -98,9 +95,9 @@ function SignInBasic() {
                 textAlign="center"
               >
                 <MKTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  Sign in
+                  Sign up
                 </MKTypography>
-                <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+                {/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
                   <Grid item xs={2}>
                     <MKTypography component={MuiLink} href="#" variant="body1" color="white">
                       <FacebookIcon color="inherit" />
@@ -116,17 +113,23 @@ function SignInBasic() {
                       <GoogleIcon color="inherit" />
                     </MKTypography>
                   </Grid>
-                </Grid>
+                </Grid> */}
               </MKBox>
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form">
+                  <MKBox mb={2}>
+                    <MKInput label="Name" fullWidth />
+                  </MKBox>
+                  <MKBox mb={2}>
+                    <MKInput label="User Name" fullWidth />
+                  </MKBox>
                   <MKBox mb={2}>
                     <MKInput type="email" label="Email" fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
                     <MKInput type="password" label="Password" fullWidth />
                   </MKBox>
-                  <MKBox display="flex" alignItems="center" ml={-1}>
+                  {/* <MKBox display="flex" alignItems="center" ml={-1}>
                     <Switch checked={rememberMe} onChange={handleSetRememberMe} />
                     <MKTypography
                       variant="button"
@@ -137,17 +140,17 @@ function SignInBasic() {
                     >
                       &nbsp;&nbsp;Remember me
                     </MKTypography>
-                  </MKBox>
+                  </MKBox> */}
                   <MKBox mt={4} mb={1}>
                     <MKButton variant="gradient" color="info" fullWidth>
-                      sign in
+                      Create Account
                     </MKButton>
                   </MKBox>
-                  <MKBox mt={3} mb={1} textAlign="center">
+                  {/* <MKBox mt={3} mb={1} textAlign="center">
                     <MKTypography variant="button" color="text">
                       Don&apos;t have an account?{" "}
                       <MKTypography
-                        component={Link}
+                        // component={<SignUp/>}
                         to="/pages/authentication/sign-up"
                         variant="button"
                         color="info"
@@ -157,7 +160,7 @@ function SignInBasic() {
                         Sign up
                       </MKTypography>
                     </MKTypography>
-                  </MKBox>
+                  </MKBox> */}
                 </MKBox>
               </MKBox>
             </Card>
@@ -171,4 +174,4 @@ function SignInBasic() {
   );
 }
 
-export default SignInBasic;
+export default SignUpBasic;

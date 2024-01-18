@@ -22,8 +22,9 @@ import Tooltip from "@mui/material/Tooltip";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import { Link } from "react-router-dom";
 
-function ExampleCard({ image, name, count, pro, ...rest }) {
+function ExampleCard({ image, name, count, pro, authorName, ...rest }) {
   const imageTemplate = (
     <MKBox
       bgColor="white"
@@ -72,7 +73,8 @@ function ExampleCard({ image, name, count, pro, ...rest }) {
         component="img"
         src={image}
         alt={name}
-        width="100%"
+        width="300px"
+        height="200px"
         my="auto"
         opacity={pro ? 0.6 : 1}
       />
@@ -95,9 +97,14 @@ function ExampleCard({ image, name, count, pro, ...rest }) {
               {name}
             </MKTypography>
           )}
+          {authorName && (
+            <MKTypography variant="h6" fontWeight="regular" color="secondary">
+              <Link to={"/pages/landing-pages/author"}>{authorName}</Link>
+            </MKTypography>
+          )}
           {count > 0 && (
             <MKTypography variant="button" fontWeight="regular" color="secondary">
-              {count} {count === 1 ? "Example" : "Examples"}
+              {count} {count === 1 ? "Course" : "Courses"}
             </MKTypography>
           )}
         </MKBox>
@@ -111,6 +118,7 @@ ExampleCard.defaultProps = {
   name: "",
   count: 0,
   pro: false,
+  authorName: "",
 };
 
 // Typechecking props for the ExampleCard
@@ -119,6 +127,7 @@ ExampleCard.propTypes = {
   name: PropTypes.string,
   count: PropTypes.number,
   pro: PropTypes.bool,
+  authorName: PropTypes.string,
 };
 
 export default ExampleCard;

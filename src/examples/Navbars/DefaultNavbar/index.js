@@ -43,6 +43,8 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 // Material Kit 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
+// import MKInput from "components/MKInput";
+import { TextField } from "@mui/material";
 function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
@@ -167,7 +169,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                           },
                         })}
                       >
-                        {item.name}
+                        {/* {item.name} */}
                       </MKTypography>
                     ))}
                   </Fragment>
@@ -475,11 +477,57 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             lineHeight={1}
             py={transparent ? 1.5 : 0.75}
             pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
+            mr="2"
+            display="flex"
           >
             <MKTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
               {brand}
             </MKTypography>
           </MKBox>
+          <MKBox
+            // component={Link}
+            // to={action.route}
+            // variant="button"
+            size="small"
+            color={"info"}
+            mr="2"
+            style={{ marignLeft: "10px" }}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            {/* <div style={{ marignLeft: "10px" }}>Categories</div> */}
+            <MKButton
+              // component={Link}
+              // to={action.route}
+              variant="text"
+              size="small"
+              color={"info"}
+            >
+              Categories
+            </MKButton>
+          </MKBox>
+          {/* <MKBox
+            // component={Link}
+            // to={action.route}
+            // variant="button"
+            size="small"
+            color={"info"}
+            mr="2"
+            style={{ marignLeft: "10px" }}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          > */}
+          <TextField
+            type="search"
+            label="Search"
+            variant="outlined"
+            // size="large"
+            style={{ width: "530px" }}
+            autoFocus
+          />
+          {/* </MKBox> */}
           <MKBox
             color="inherit"
             display={{ xs: "none", lg: "flex" }}
@@ -551,7 +599,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
 
 // Setting default values for the props of DefaultNavbar
 DefaultNavbar.defaultProps = {
-  brand: "Material Kit 2",
+  brand: "Eagle Labs",
   transparent: false,
   light: false,
   action: false,

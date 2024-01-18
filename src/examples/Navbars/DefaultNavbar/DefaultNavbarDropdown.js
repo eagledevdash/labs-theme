@@ -24,8 +24,9 @@ import Collapse from "@mui/material/Collapse";
 import Icon from "@mui/material/Icon";
 
 // Material Kit 2 React components
-import MKBox from "components/MKBox";
+// import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import { Box } from "@mui/material";
 
 function DefaultNavbarDropdown({
   name,
@@ -52,7 +53,7 @@ function DefaultNavbarDropdown({
 
   return (
     <>
-      <MKBox
+      <Box
         {...rest}
         mx={1}
         p={1}
@@ -63,6 +64,7 @@ function DefaultNavbarDropdown({
         sx={{ cursor: "pointer", userSelect: "none" }}
         {...(route && routeComponent)}
         {...(href && linkComponent)}
+        style={{ marginLeft: "0", marginRight: "0", display: "flex", alignItems: "center" }}
       >
         <MKTypography
           variant="body2"
@@ -75,7 +77,7 @@ function DefaultNavbarDropdown({
         <MKTypography
           variant="button"
           fontWeight="regular"
-          textTransform="capitalize"
+          // textTransform="capitalize"
           color={light ? "white" : "dark"}
           sx={{ fontWeight: "100%", ml: 1, mr: 0.25 }}
         >
@@ -86,7 +88,7 @@ function DefaultNavbarDropdown({
             {collapse && "keyboard_arrow_down"}
           </Icon>
         </MKTypography>
-      </MKBox>
+      </Box>
       {children && (
         <Collapse in={Boolean(collapseStatus)} timeout={400} unmountOnExit>
           {children}
