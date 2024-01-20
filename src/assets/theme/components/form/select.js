@@ -14,10 +14,10 @@ Coded by www.creative-tim.com
 */
 
 // Material Kit 2 React base styles
-import colors from "assets/theme/base/colors";
+import colors from "~/assets/theme/base/colors";
 
 // Material Kit 2 React helper functions
-import pxToRem from "assets/theme/functions/pxToRem";
+import pxToRem from "~/assets/theme/functions/pxToRem";
 
 const { transparent } = colors;
 
