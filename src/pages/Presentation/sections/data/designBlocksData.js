@@ -21,27 +21,27 @@ export default [
     description: "Collection of top labs created by instructor",
     items: [
       {
-        image: `https://www.aabiance.com/blogs/How_does_AWS_flourish_for_present_future_generations_11082021100857.png`,
-        name: "AWS Labs",
+        image: `https://caltechsites-prod.s3.amazonaws.com/scienceexchange/images/CSE-QuantumComputing-Header-W.2e16d0ba.fill-933x525-c100.jpg`,
+        name: "Quantum computing",
         count: 10,
         route: "/sections/page-sections/page-headers",
         authorName: "Michael Roven",
       },
       {
         image: `https://www.freecodecamp.org/news/content/images/2020/10/gcp.png`,
-        name: "GCP Labs",
+        name: "Solar lab",
         count: 14,
         route: "/sections/page-sections/features",
       },
       {
         image: `https://d15shllkswkct0.cloudfront.net/wp-content/blogs.dir/1/files/2022/05/Azure.png`,
-        name: "Azure",
+        name: "IOT lab",
         count: 8,
         // pro: true,
       },
       {
         image: `https://www.ntuclearninghub.com/documents/39367/4216797/Python-Symbol.png/369e410e-a90f-f887-c2dc-61f7ef761476/`,
-        name: "Azure",
+        name: "Data Engineering",
         count: 8,
       },
       // {

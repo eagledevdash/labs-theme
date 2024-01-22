@@ -74,7 +74,7 @@ function ExampleCard({ image, name, count, pro, authorName, ...rest }) {
         src={image}
         alt={name}
         width="300px"
-        height="200px"
+        height="141px"
         my="auto"
         opacity={pro ? 0.6 : 1}
       />

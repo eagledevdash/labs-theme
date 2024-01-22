@@ -41,7 +41,7 @@ export default {
     },
 
     icon: {
-      display: "none",
+      // display: "none",
     },
   },
 };

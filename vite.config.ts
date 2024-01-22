@@ -45,6 +45,14 @@ export default defineConfig({
       '~': path.resolve('./src'),
     },
   },
+  optimizeDeps: {
+    esbuildOptions: {
+        // Node.js global to browser globalThis
+        define: {
+            global: 'globalThis',
+        },
+    },
+},
   plugins: [
     react(), 
     // viteTsconfigPaths(),

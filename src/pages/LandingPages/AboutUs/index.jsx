@@ -39,7 +39,7 @@ import footerRoutes from "~/footer.routes";
 
 // Images
 import bgImage from "~/assets/images/bg-about-us.jpg";
-
+import LabConfiguration from "../LabConfiguration";
 function AboutUs() {
   return (
     <>
@@ -135,6 +135,7 @@ function AboutUs() {
       <MKBox pt={6} px={1} mt={6}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
+      <LabConfiguration />
     </>
   );
 }

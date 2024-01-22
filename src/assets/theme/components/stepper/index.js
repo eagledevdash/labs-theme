@@ -29,10 +29,10 @@ const { colored } = boxShadows;
 export default {
   styleOverrides: {
     root: {
-      background: linearGradient(gradients.info.main, gradients.info.state),
+      // background: linearGradient(gradients.info.main, gradients.info.state),
       padding: `${pxToRem(24)} 0 ${pxToRem(16)}`,
       borderRadius: borderRadius.lg,
-      boxShadow: colored.info,
+      // boxShadow: colored.info,
 
       "&.MuiPaper-root": {
         backgroundColor: transparent.main,
