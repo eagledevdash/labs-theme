@@ -30,6 +30,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { labPermissionsArr, allOptions } from "./Constant";
 import { lighten, darken } from "@mui/system";
+import Draft, { convertToRaw, convertFromHTML } from "draft-js";
 
 /**
  * @author
@@ -78,12 +79,12 @@ const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   alignItems: "center",
   ...(ownerState.active && {
     backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+      "linear-gradient( 136deg, rgb(39, 118, 245) 0%, rgb(48, 193, 255) 50%, rgb(99, 158, 247) 100%)",
     boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   }),
   ...(ownerState.completed && {
     backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+      "linear-gradient( 136deg, rgb(39, 118, 245) 0%, rgb(48, 193, 255) 50%, rgb(99, 158, 247) 100%)",
   }),
 }));
 
@@ -94,13 +95,13 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
       backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+        "linear-gradient( 95deg,rgb(39, 118, 245) 0%,rgb(48, 193, 255) 50%,rgb(99, 158, 247) 100%)",
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
       backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+        "linear-gradient( 95deg,rgb(39, 118, 245) 0%,rgb(48, 193, 255) 50%,rgb(99, 158, 247) 100%)",
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -152,9 +153,12 @@ const GroupItems = styled("ul")({
 
 const steps = ["Basic Details", "Step Configuration", "Labs Permissions"];
 function LabConfiguration(props) {
-  const [cloudServices, setCloudServices] = React.useState([]);
-  const [selectedPermissions, setSelectedPermissions] = React.useState([]);
-  const [stepConfiguration, setStepConfiguration] = useState([{ label: "", Editor: "" }]);
+  const editorEmptyObject = { label: "", editor: "" };
+  const [labTitle, setLabTitle] = useState("");
+  const [labDesc, setLabDesc] = useState("");
+  const [cloudServices, setCloudServices] = useState([]);
+  const [selectedPermissions, setSelectedPermissions] = useState([]);
+  const [stepConfiguration, setStepConfiguration] = useState([editorEmptyObject]);
   const [step, setStep] = useState(1);
 
   const getStepContent = (step) => {
@@ -168,10 +172,24 @@ function LabConfiguration(props) {
                 style={{ maxWidth: "1137px", minWidth: "1137px" }}
               >
                 <div className="mb-3">
-                  <TextField type="text" label="Lab title" fullWidth />
+                  <TextField
+                    type="text"
+                    label="Lab title"
+                    value={labTitle}
+                    onChange={(e) => setLabTitle(e.target.value)}
+                    fullWidth
+                  />
                 </div>
                 <div className="mb-2">
-                  <TextField type="text" label="Lab Description" fullWidth multiline rows={5} />
+                  <TextField
+                    type="text"
+                    label="Lab Description"
+                    fullWidth
+                    multiline
+                    rows={5}
+                    value={labDesc}
+                    onChange={(e) => setLabDesc(e.target.value)}
+                  />
                 </div>
 
                 <Box sx={{ minWidth: 120, minHeight: 120 }}>
@@ -209,32 +227,41 @@ function LabConfiguration(props) {
           <>
             {stepConfiguration.map((step, index) => (
               <Card key={index} style={{ height: "auto", minHeight: "300px" }} className="p-3 mb-3">
-                {stepConfiguration.length !== 1 ? (
-                  <div className="cursor-pointer mb-2 text-right" onClick={() => deleteStep(index)}>
-                    <DeleteOutlineIcon />
-                  </div>
-                ) : (
-                  ""
-                )}
+                <div className="cursor-pointer mb-2 text-right" onClick={() => deleteStep(index)}>
+                  <DeleteOutlineIcon />
+                </div>
                 <div className="d-flex justify-content-center">
                   <div
                     className="container position-relative"
                     style={{ maxWidth: "1137px", minWidth: "1137px" }}
                   >
                     <div className="mb-3">
-                      <TextField type="text" label="Step title" fullWidth />
+                      <TextField
+                        type="text"
+                        label="Step title"
+                        fullWidth
+                        value={step.label}
+                        onChange={(e) => updateStep(index, e.target.value)}
+                      />
                     </div>
-                    <div className="mb-1">{/* <InputLabel> Step Description</InputLabel> */}</div>
                     <div className="mb-2">
-                      <MUIRichTextEditor label="Step Description ..." />
+                      <MUIRichTextEditor
+                        label="Step Description ..."
+                        defaultValue={step.editor}
+                        onChange={(e) => updateStepEditor(index, e)}
+                        onSave={(e) => handleEditorSave(index, e)}
+                        onBlur={() => updateStepEditor(index)}
+                      />
                     </div>
                   </div>
                 </div>
               </Card>
             ))}
 
-            <div className="text-right mt-2 cursor-pointer" onClick={addNewStep}>
-              <AddIcon /> Add new step
+            <div className="text-right">
+              <span className="mt-2 cursor-pointer" onClick={addNewStep}>
+                <AddIcon /> Add new step
+              </span>
             </div>
           </>
         );
@@ -376,24 +403,61 @@ function LabConfiguration(props) {
     //   // On autofill we get a stringified value.
     //   typeof value === "string" ? value.split(",") : value
     // );
-    setSelectedPermissions(newValue)
+    setSelectedPermissions(newValue);
   };
-  const handleStep = () => {
-    if (steps.length === step) return;
-    setStep((prevStep) => prevStep + 1);
+  const handleStep = (next) => {
+    console.log("cloudServices:", cloudServices);
+    console.log("selectedPermissions:", selectedPermissions);
+    console.log("stepConfiguration:", stepConfiguration);
+    console.log("step:", step);
+    console.log("labTitle:", labTitle);
+    console.log("labDesc:", labDesc);
+    if (next) {
+      if (steps.length === step) return;
+      setStep((prevStep) => prevStep + 1);
+    } else {
+      if (step === 1) return;
+      setStep((prevStep) => prevStep - 1);
+    }
   };
 
   const addNewStep = () => {
     const temp = JSON.parse(JSON.stringify(stepConfiguration));
-    temp.push({ label: "", Editor: "" });
+    temp.push(editorEmptyObject);
     setStepConfiguration(temp);
   };
 
   const deleteStep = (index) => {
-    const temp = JSON.parse(JSON.stringify(stepConfiguration));
+    let temp = JSON.parse(JSON.stringify(stepConfiguration));
     temp.splice(index, 1);
+    if (temp.length === 0) {
+      temp.push(editorEmptyObject);
+    }
     setStepConfiguration(temp);
   };
+
+  const updateStep = (index, value) => {
+    let temp = JSON.parse(JSON.stringify(stepConfiguration));
+    temp[index].label = value;
+    setStepConfiguration(temp);
+  };
+
+  const handleEditorSave = (index, value) => {
+    let temp = JSON.parse(JSON.stringify(stepConfiguration));
+    temp[index].editor = value;
+    setStepConfiguration(temp);
+  };
+
+  const updateStepEditor = (index, value) => {
+    let temp = JSON.parse(JSON.stringify(stepConfiguration));
+    if (value) {
+      temp[index].editorHTML = Draft.convertToRaw(value.getCurrentContent());
+    } else {
+      temp[index].editor = temp[index].editorHTML ? JSON.stringify(temp[index].editorHTML) : "";
+    }
+    setStepConfiguration(temp);
+  };
+
   return (
     <Dialog fullScreen open={true}>
       <DialogTitleWrapper>
@@ -407,7 +471,7 @@ function LabConfiguration(props) {
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel StepIconComponent={ColorlibStepIcon}>
-                  <div style={{ color: "red" }}>{label}</div>
+                  <div style={{ color: "#639ef7" }}>{label}</div>
                 </StepLabel>
                 {/* <StepContent className="d-flex justify-content-center mt-3 align-content-center">
                 <MKInput type="text" label="Lab title" fullWidth />
@@ -420,8 +484,10 @@ function LabConfiguration(props) {
       </DialogBodyWrapper>
       <DialogActionsWrapper>
         <div className="d-flex align-items-center justify-content-between m-auto container">
-          <MKButton variant="gradient">Cancel</MKButton>
-          <MKButton variant="gradient" color="info" onClick={handleStep}>
+          <MKButton variant="gradient" onClick={() => handleStep(false)}>
+            {step == 1 ? "Cancel" : "Back"}
+          </MKButton>
+          <MKButton variant="gradient" color="info" onClick={() => handleStep(true)}>
             Next
           </MKButton>
         </div>
