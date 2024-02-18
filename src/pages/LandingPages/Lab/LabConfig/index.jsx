@@ -159,6 +159,7 @@ function LabConfiguration(props) {
   const [labTitle, setLabTitle] = useState("");
   const [labDesc, setLabDesc] = useState("");
   const [cloudServices, setCloudServices] = useState([]);
+  const [category, setCategory] = useState([]);
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [stepConfiguration, setStepConfiguration] = useState([editorEmptyObject]);
   const [step, setStep] = useState(1);
@@ -201,7 +202,7 @@ function LabConfiguration(props) {
                     fullWidth
                   />
                 </div>
-                <div className="mb-2">
+                <div className="mb-3">
                   <TextField
                     type="text"
                     label="Lab Description"
@@ -213,7 +214,7 @@ function LabConfiguration(props) {
                   />
                 </div>
 
-                <Box sx={{ minWidth: 120, minHeight: 120 }}>
+                <Box className="mb-2" sx={{ minWidth: 120, minHeight: 60 }}>
                   <FormControl fullWidth style={{ minHeight: "40px" }}>
                     <InputLabel id="demo-simple-select-label">Select Cloud Platform</InputLabel>
                     <Select
@@ -236,6 +237,33 @@ function LabConfiguration(props) {
                       <MenuItem value={"AZURE"}>AZURE</MenuItem>
                       <MenuItem value={"GCP"}>GCP</MenuItem>
                       <MenuItem value={"AWS"}>AWS</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box className="mb-2" sx={{ minWidth: 120, minHeight: 60 }}>
+                  <FormControl fullWidth style={{ minHeight: "40px" }}>
+                    <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={category}
+                      label="Select Category"
+                      multiple
+                      onChange={handleChangeCategory}
+                      style={{ minHeight: "50px" }}
+                      IconComponent={ArrowDropDownIcon}
+                      renderValue={(selected) => (
+                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                          {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      <MenuItem value={"DATABASE"}>Database</MenuItem>
+                      <MenuItem value={"VIRTUAL MACHINE"}>Virtual Machine</MenuItem>
+                      <MenuItem value={"PROGRAMMING"}>Programming</MenuItem>
+                      <MenuItem value={"NETWORKING"}>Networking</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -416,6 +444,16 @@ function LabConfiguration(props) {
     );
   };
 
+  const handleChangeCategory = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCategory(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
   const handleChangePermissions = (event, newValue) => {
     console.log("event", newValue);
     // const {
@@ -429,13 +467,6 @@ function LabConfiguration(props) {
   };
 
   const handleStep = (next) => {
-    console.log("cloudServices:", cloudServices);
-    console.log("selectedPermissions:", selectedPermissions);
-    console.log("stepConfiguration:", stepConfiguration);
-    console.log("step:", step);
-    console.log("labTitle:", labTitle);
-    console.log("labDesc:", labDesc);
-
     if (next) {
       if (steps.length === step) {
         if (labId) {
@@ -516,9 +547,27 @@ function LabConfiguration(props) {
       cloudServices,
       stepConfiguration,
       selectedPermissions,
-      labCreatedBy: "101", //replace with userId from userFlow
     };
     return labConfig;
+  };
+
+  const handleDisabled = () => {
+    switch (step) {
+      case 1:
+        return (
+          labTitle === "" && labDesc === "" && cloudServices.length === 0 && category.length === 0
+        );
+      case 2:
+        return (
+          stepConfiguration.length === 0 &&
+          stepConfiguration.length &&
+          stepConfiguration.some((step) => !step.label)
+        );
+      case 3:
+        return selectedPermissions.length === 0;
+      default:
+        return false;
+    }
   };
 
   return (
@@ -550,8 +599,13 @@ function LabConfiguration(props) {
           <MKButton variant="gradient" onClick={() => handleStep(false)}>
             {step == 1 ? "Cancel" : "Back"}
           </MKButton>
-          <MKButton variant="gradient" color="info" onClick={() => handleStep(true)}>
-            Next
+          <MKButton
+            variant="gradient"
+            color="info"
+            onClick={() => handleStep(true)}
+            disabled={handleDisabled()}
+          >
+            {step == steps.length ? "Save" : "Next"}
           </MKButton>
         </div>
       </DialogActionsWrapper>
