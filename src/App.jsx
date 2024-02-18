@@ -32,6 +32,8 @@ import routes from "./routes";
 import ContactUs from "~/layouts/pages/landing-pages/contact-us";
 import AboutUs from "~/layouts/pages/landing-pages/about-us";
 import Author from "~/layouts/pages/landing-pages/author";
+import Lab from "~/pages/LandingPages/Lab";
+import LabLanding from "./pages/LandingPages/Lab/LabLanding";
 export default function App() {
   const { pathname } = useLocation();
 
@@ -61,9 +63,12 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="/" element={<Presentation />} />
         <Route path="*" element={<Navigate to="/" />} />
-        <Route path="/pages/landing-pages/contact-us" element={<ContactUs />} />
-        <Route path="/pages/landing-pages/about-us" element={<AboutUs />} />
-        <Route path="/pages/landing-pages/author" element={<Author />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/author" element={<Author />} />
+        <Route path="/lab/:id" element={<LabLanding />} />
+        <Route path="/lab" element={<Lab />} />
+        <Route path="/lab/edit/:id" element={<Lab />} />
       </Routes>
     </ThemeProvider>
   );

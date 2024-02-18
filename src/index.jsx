@@ -20,8 +20,6 @@ import App from "./App";
 
 const container = document.getElementById("root");
 
-console.log('test if running!')
-
 // Create a root.
 const root = ReactDOMClient.createRoot(container);
 

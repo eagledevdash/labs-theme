@@ -48,6 +48,7 @@ Coded by www.creative-tim.com
 // import Author from "layouts/pages/landing-pages/author";
 import SignIn from "~/layouts/pages/authentication/sign-in";
 import SignUp from "~/layouts/pages/authentication/sign-up";
+import Labs from "~/pages/LandingPages/Lab";
 
 // Sections
 // import PageHeaders from "layouts/sections/page-sections/page-headers";
@@ -275,15 +276,22 @@ import MKButton from "~/components/MKButton";
 // ];
 
 const routes = [
-  {
-    name: "Labs business",
-    columns: 1,
-    rowsPerColumn: 2,
-  },
+  // {
+  //   name: "Labs business",
+  //   columns: 1,
+  //   rowsPerColumn: 2,
+  // },
   {
     name: "Teach on labs",
     columns: 1,
     rowsPerColumn: 2,
+  },
+  {
+    name: "Create lab",
+    columns: 1,
+    rowsPerColumn: 2,
+    route: "lab",
+    component: <Labs />,
   },
   // {
   //   name: "Categories",

@@ -39,8 +39,8 @@ import footerRoutes from "~/footer.routes";
 
 // Images
 import bgImage from "~/assets/images/bg-about-us.jpg";
-import LabConfiguration from "~/pages/LandingPages/Lab/LabConfig";
-function AboutUs() {
+import LabConfiguration from "./LabConfig";
+function Lab() {
   return (
     <>
       <DefaultNavbar
@@ -140,4 +140,4 @@ function AboutUs() {
   );
 }
 
-export default AboutUs;
+export default Lab;

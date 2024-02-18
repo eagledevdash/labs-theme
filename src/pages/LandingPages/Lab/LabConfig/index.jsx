@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Autocomplete,
   Box,
@@ -31,6 +32,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { labPermissionsArr, allOptions } from "./Constant";
 import { lighten, darken } from "@mui/system";
 import Draft, { convertToRaw, convertFromHTML } from "draft-js";
+import axios from "axios";
 
 /**
  * @author
@@ -160,6 +162,25 @@ function LabConfiguration(props) {
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [stepConfiguration, setStepConfiguration] = useState([editorEmptyObject]);
   const [step, setStep] = useState(1);
+  const [labId, setLabId] = useState(null);
+  const params = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (params?.id) {
+      fetchLabDetails(params.id);
+      setLabId(params.id);
+    }
+  }, []);
+
+  const fetchLabDetails = async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/labs/${id}`);
+    setCloudServices(response.data.cloudServices);
+    setSelectedPermissions(response.data.selectedPermissions);
+    setStepConfiguration(response.data.stepConfiguration);
+    setLabTitle(response.data.labTitle);
+    setLabDesc(response.data.labDesc);
+  };
 
   const getStepContent = (step) => {
     switch (step) {
@@ -384,6 +405,7 @@ function LabConfiguration(props) {
         );
     }
   };
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -405,6 +427,7 @@ function LabConfiguration(props) {
     // );
     setSelectedPermissions(newValue);
   };
+
   const handleStep = (next) => {
     console.log("cloudServices:", cloudServices);
     console.log("selectedPermissions:", selectedPermissions);
@@ -412,8 +435,16 @@ function LabConfiguration(props) {
     console.log("step:", step);
     console.log("labTitle:", labTitle);
     console.log("labDesc:", labDesc);
+
     if (next) {
-      if (steps.length === step) return;
+      if (steps.length === step) {
+        if (labId) {
+          updateLab();
+        } else {
+          createLab();
+        }
+        return;
+      }
       setStep((prevStep) => prevStep + 1);
     } else {
       if (step === 1) return;
@@ -456,6 +487,38 @@ function LabConfiguration(props) {
       temp[index].editor = temp[index].editorHTML ? JSON.stringify(temp[index].editorHTML) : "";
     }
     setStepConfiguration(temp);
+  };
+
+  const createLab = async () => {
+    const labConfig = createLabConfig();
+    console.log("labConfig:", labConfig);
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/labs`, labConfig);
+    console.log("response:", response);
+    if (response.status === 200 && response.data.success) {
+      navigate("/");
+    }
+  };
+
+  const updateLab = async () => {
+    const labConfig = createLabConfig();
+    console.log("labConfig:", labConfig);
+    const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/labs/${labId}`, labConfig);
+    console.log("response:", response);
+    if (response.status === 200 && response.data.success) {
+      navigate("/");
+    }
+  };
+
+  const createLabConfig = () => {
+    let labConfig = {
+      labTitle,
+      labDesc,
+      cloudServices,
+      stepConfiguration,
+      selectedPermissions,
+      labCreatedBy: "101", //replace with userId from userFlow
+    };
+    return labConfig;
   };
 
   return (
