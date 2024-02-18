@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path'
+import EnvironmentPlugin from 'vite-plugin-environment'; 
+
 // import viteTsconfigPaths from 'vite-tsconfig-paths';
 // import svgr from 'vite-plugin-svgr';
 
@@ -52,9 +54,10 @@ export default defineConfig({
             global: 'globalThis',
         },
     },
-},
+  },
   plugins: [
     react(), 
+    EnvironmentPlugin('all', {prefix: ''}),
     // viteTsconfigPaths(),
     // svgr({
     //   include: '**/*.svg?react',
