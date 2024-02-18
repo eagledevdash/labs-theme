@@ -547,6 +547,7 @@ function LabConfiguration(props) {
       cloudServices,
       stepConfiguration,
       selectedPermissions,
+      category,
     };
     return labConfig;
   };
